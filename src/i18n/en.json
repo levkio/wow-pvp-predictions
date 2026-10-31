@@ -1,0 +1,11 @@
+{
+  "prediction.outcome.win": "Win",
+  "prediction.outcome.loss": "Loss",
+  "prediction.title.arena2v2": "2v2 arena: win or loss?",
+  "prediction.title.arena3v3": "3v3 arena: win or loss?",
+  "prediction.title.skirmish": "Skirmish: win or loss?",
+  "prediction.title.shuffleRound": "Shuffle round {round}/6: win?",
+  "prediction.title.battleground": "Battleground: win or loss?",
+  "prediction.title.ratedBattleground": "Rated BG: win or loss?",
+  "prediction.title.blitz": "BG Blitz: win or loss?"
+}

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+# Local runtime data: tokens, configuration, statistics
+data/
+# Raw combat logs can contain other players' names. Commit only trimmed fixtures.
+WoWCombatLog*.txt
