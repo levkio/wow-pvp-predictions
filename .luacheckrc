@@ -9,4 +9,6 @@ globals = {
 read_globals = {
     "C_CVar", "C_Timer", "CreateFrame", "GetCVar", "SetCVar",
     "InCombatLockdown", "IsInInstance", "LoggingCombat",
+    "C_PvP", "GetBattlefieldStatus", "GetBattlefieldWinner", "GetBattlefieldArenaFaction",
+    "UnitFactionGroup", "issecretvalue", "date",
 }

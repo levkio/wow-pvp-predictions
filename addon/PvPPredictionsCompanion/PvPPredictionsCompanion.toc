@@ -8,3 +8,4 @@
 ## X-Website: https://github.com/levkio/wow-pvp-predictions
 
 PvPPredictionsCompanion.lua
+Probe.lua

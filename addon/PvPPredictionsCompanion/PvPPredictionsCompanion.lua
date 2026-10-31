@@ -3,7 +3,7 @@
 -- and turns it off again after a delay when the player leaves.
 -- The desktop app reads Logs\WoWCombatLog*.txt. This addon sends no data.
 
-local ADDON_NAME = ...
+local ADDON_NAME, ns = ...
 
 local DEFAULTS = {
     enabled = true,
@@ -23,6 +23,11 @@ local retries = 0
 
 local function Print(message)
     print("|cff4fc3f7PvP Predictions:|r " .. message)
+end
+
+ns.Print = Print
+ns.GetDB = function()
+    return db
 end
 
 -- LoggingCombat is rate limited to 5 calls per 10 seconds, shared by all addons.
@@ -175,10 +180,12 @@ local function HandleSlash(input)
     elseif command == "verbose" then
         db.verbose = not db.verbose
         Print("Chat messages " .. (db.verbose and "on." or "off."))
+    elseif command == "probe" then
+        ns.ToggleProbe()
     elseif command == "status" or command == "" then
         PrintStatus()
     else
-        Print("Commands: /pvppc status | on | off | arena | bg | delay <0-120> | verbose")
+        Print("Commands: /pvppc status | on | off | arena | bg | delay <0-120> | verbose | probe")
     end
 end
 
@@ -201,6 +208,7 @@ frame:SetScript("OnEvent", function(self, event, arg1)
         self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
         SLASH_PVPPREDICTIONSCOMPANION1 = "/pvppc"
         SlashCmdList.PVPPREDICTIONSCOMPANION = HandleSlash
+        ns.InitProbe()
     else
         Update()
     end
