@@ -6,7 +6,7 @@ You play one match per mode with combat logging on. We keep the logs as test dat
 
 ## Phase 1: Repository and project skeleton
 
-TypeScript, ESLint, Vitest, GitHub Actions, README, i18n (German and English). Done.
+TypeScript, ESLint, Vitest, GitHub Actions, README. All text is in English. Done.
 
 ## Phase 2: Log parser and state machine
 
