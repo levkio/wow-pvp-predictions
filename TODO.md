@@ -26,7 +26,7 @@ This list covers what we must test before the parser and the Twitch client are f
 | [ ] | Rated 2v2 | Any | `matchType` value and rating fields in `ARENA_MATCH_END`. |
 | [ ] | Rated 3v3 | Any | Same as 2v2. Also: RatedTracker and AutoCombatLogger both control the log. Make sure that no lines are lost. |
 | [x] | Solo Shuffle | 3-3 | Round start, round end and round winner. Confirmed on 2026-10-31. |
-| [ ] | Solo Shuffle | Round ends by time limit | What the log shows when nobody dies. Only if it happens. |
+| [ ] | Solo Shuffle | Round ends by time limit | What the log shows when nobody dies. You cannot plan it, so we test it when it occurs. |
 | [ ] | Random battleground | Any | Lines for entry, start and end, and the winner. The wiki documents none. |
 | [ ] | Epic battleground | Any | Same as random battleground. |
 | [ ] | Battleground Blitz | Any | Same as random battleground. Does AutoCombatLogger start the log? |
