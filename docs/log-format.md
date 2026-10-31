@@ -67,6 +67,21 @@ So viewers have about 35 seconds to bet on rounds 2 to 6, minus the stream delay
 
 Still open for Solo Shuffle: a round that ends by the time limit without a death, and a player who leaves during the match.
 
+## Confirmed: early leave from an arena (2v2 skirmish)
+
+Recorded on 2026-10-31. The player left about 13 seconds after the gates opened.
+
+```
+22:38:00.3451  ZONE_CHANGE,2167,"The Robodrome",0
+22:38:56.6441  SPELL_AURA_REMOVED,<self>,...,44521,"Preparation",...
+22:38:56.6451  ARENA_MATCH_START,2167,42,Skirmish,0
+22:39:11.3521  ZONE_CHANGE,0,"Silvermoon City",0
+```
+
+Rule: if a `ZONE_CHANGE` out of the arena comes after `ARENA_MATCH_START` and before `ARENA_MATCH_END`, the player left. The tool cancels the prediction.
+
+The removal of the `Preparation` aura and `ARENA_MATCH_START` have the same time stamp (1 millisecond apart). Entry to gates was 56 seconds again, the same as in the first skirmish.
+
 ## Tested: random battleground (Seething Shore, loss)
 
 Recorded on 2026-10-31 with the companion addon. `/pvppc status` showed zone type `pvp`, and the addon started the log.
@@ -112,6 +127,8 @@ The file size in a directory listing is not reliable while the file is open. Dur
 | 22:17:39 | none (file empty, entry was at 22:17:06) |
 | 22:28:07 | 22:27:17.9 |
 | 22:32:12 | 22:27:54.9 (written at 22:29:56) |
+
+In the early-leave skirmish, the lines from 22:39:09 to 22:39:41 reached the disk at 22:44:09. That is a delay of about 4.5 minutes. The game wrote nothing in between, although the log was already stopped.
 
 The game writes the log in large blocks, not line by line. A line can reach the disk more than 30 seconds after it happened. This is a risk for live predictions: the lock and the result can arrive late. In Solo Shuffle, the break between rounds is only 35 seconds. We must measure the delay exactly before we build the state machine.
 
