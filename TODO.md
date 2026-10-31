@@ -41,6 +41,8 @@ This list covers what we must test before the parser and the Twitch client are f
 
 - [ ] Measure the write delay of the log file with an open file handle, in an arena match and in Solo Shuffle. First result in a battleground: more than 30 seconds in some cases. This is now the most important open point.
 - [ ] Find out what makes the game write its buffer (time, buffer size, or `LoggingCombat(false)`).
+- [ ] Measure how much the ready lever shortens the preparation time in arena and Solo Shuffle. Test one match where all players use the lever and one where nobody uses it. The skirmish chat log shows the message "Someone has indicated they are ready for the match to start!" before the countdown.
+- [ ] Decide how the tool locks a prediction on time when log lines arrive late. Idea: use the time stamp in the entry line and set `prediction_window` so that Twitch locks the prediction by itself.
 - [x] Solo Shuffle: measure the break between rounds. Result: 35 to 36 seconds. Decide if this is enough time for viewers to bet.
 - [ ] Battlegrounds: measure the time between entry and start.
 
