@@ -37,6 +37,7 @@ AutoCombatLogger restarted the log on entry. A new `COMBAT_LOG_VERSION` line app
 
 1. Open Options, System, Network, and turn on Advanced Combat Logging.
 2. Turn on combat logging with one of these two methods:
+   - Install the companion addon from `addon/PvPPredictionsCompanion`. It starts the log when you enter an arena or a battleground.
    - Install the addon [AutoCombatLogger](https://www.curseforge.com/wow/addons/autocombatlogger) and set logging for arenas and battlegrounds to "Yes". The addon starts the log when you enter an arena or a battleground.
    - Before each match, type `/combatlog` in chat. The game confirms that combat logging is on.
 3. Write down the clock time when you enter the instance, when the gates open, and when the match ends. Write down the result. For Solo Shuffle, write down the time and the result of each round.

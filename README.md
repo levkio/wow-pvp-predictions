@@ -6,7 +6,22 @@ Status: early development. The tool does not work yet. See [docs/roadmap.md](doc
 
 ## How it works
 
-The tool reads the combat log file that World of Warcraft writes to disk (`WoWCombatLog.txt`). It does not use an addon and it does not read the screen. Since patch 12.0.0 (Midnight), addons cannot read combat events or chat during a PvP match. The log file is outside of the game, so these limits do not apply to it.
+The tool has two parts:
+
+- A desktop app. It reads the combat log file that World of Warcraft writes to disk (`WoWCombatLog.txt`), and it controls the Twitch Prediction and the overlay.
+- A small companion addon, [PvP Predictions Companion](addon/PvPPredictionsCompanion). It turns on combat logging when you enter an arena or a battleground. It sends no data.
+
+The app does not read the screen. Since patch 12.0.0 (Midnight), addons cannot read combat events or chat during a PvP match, and they cannot send data out of the game. The log file is outside of the game, so these limits do not apply to it.
+
+## Companion addon commands
+
+```
+/pvppc status        show the addon state and the zone type
+/pvppc on | off      turn the addon on or off
+/pvppc arena | bg    turn logging for arenas or battlegrounds on or off
+/pvppc delay 30      seconds of logging after you leave the match
+/pvppc verbose       turn the chat messages on or off
+```
 
 ## Requirements
 

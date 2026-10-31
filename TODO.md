@@ -4,9 +4,18 @@ This list covers what we must test before the parser and the Twitch client are f
 
 ## Before each test match
 
-1. Make sure that AutoCombatLogger has "Yes" for Arenas and Battlegrounds, with a delay of about 30 seconds.
+1. Make sure that the PvP Predictions Companion addon is on (`/pvppc status`). As an alternative, AutoCombatLogger with "Yes" for Arenas and Battlegrounds and a delay of about 30 seconds also works. Do not use both at the same time.
 2. Make sure that Advanced Combat Logging is on (Options, Game, System, Network).
 3. After the match, tell Claude the mode and the result. For Solo Shuffle, also give the result of each round. If you do not remember it, that is no problem.
+
+## Companion addon tests
+
+- [ ] Install the addon: copy `addon/PvPPredictionsCompanion` to `World of Warcraft\_retail_\Interface\AddOns\`, turn off AutoCombatLogger, and type `/reload`.
+- [ ] Enter an arena. The chat shows "Combat logging started." A new `WoWCombatLog` file appears.
+- [ ] Leave the arena. After 30 seconds, the chat shows "Combat logging stopped."
+- [ ] Type `/pvppc status` in Solo Shuffle, in a battleground and in Blitz. Write down the zone type. The addon logs only for "arena" and "pvp".
+- [ ] Type `/reload` during a match. After the match, the addon still stops the log.
+- [ ] Play a rated match with RatedTracker on. Make sure that the log has the full match.
 
 ## In-game tests (phase 0)
 
@@ -53,4 +62,5 @@ This list covers what we must test before the parser and the Twitch client are f
 
 - [ ] Ask CurseForge support if a WoW project can contain a Windows desktop program, or if the project can name a download on GitHub. Their policy says: "External download links for files are not allowed."
 - [ ] Read the CurseForge Mod Author Terms: https://legal.overwolf.com/docs/curseforge/mod-authors-terms
-- [ ] Decide if we publish a small companion addon on CurseForge. It can turn on combat logging in PvP and replace AutoCombatLogger.
+- [x] Decide if we publish a small companion addon on CurseForge. Decision on 2026-10-31: yes.
+- [ ] Set up packaging for CurseForge (for example the BigWigs packager in GitHub Actions).

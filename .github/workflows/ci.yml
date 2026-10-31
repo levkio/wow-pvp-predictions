@@ -21,3 +21,11 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+
+  addon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: lunarmodules/luacheck@v1
+        with:
+          args: addon

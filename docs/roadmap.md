@@ -20,6 +20,10 @@ Device Code Grant Flow with a public client. Create the prediction on entry, loc
 
 OBS browser source and a setup wizard. We agree on a design before we build it.
 
+## Companion addon
+
+A small WoW addon that turns on combat logging in arenas and battlegrounds. First version done. It goes to CurseForge in phase 5.
+
 ## Phase 5: Packaging and release
 
-Windows installer or single executable, setup documentation, GitHub Releases.
+Windows installer or single executable, setup documentation, GitHub Releases. The companion addon goes to CurseForge. We ask CurseForge support first how the addon page can refer to the desktop app.

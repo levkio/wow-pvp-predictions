@@ -1,0 +1,10 @@
+## Interface: 120105
+## Title: PvP Predictions Companion
+## Notes: Turns on combat logging in arenas and battlegrounds for the wow-pvp-predictions desktop app.
+## Author: levkio
+## Version: @project-version@
+## SavedVariables: PvPPredictionsCompanionDB
+## X-License: MIT
+## X-Website: https://github.com/levkio/wow-pvp-predictions
+
+PvPPredictionsCompanion.lua
