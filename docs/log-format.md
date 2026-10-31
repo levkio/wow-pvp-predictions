@@ -104,7 +104,37 @@ Results:
 - Leave: `ZONE_CHANGE` back to the open world.
 - End and winner: no line. There is no `ARENA_MATCH_END`, no `COMBATANT_INFO`, no battleground event between the gates and the leave. The combat log alone cannot resolve a battleground prediction.
 
+## When the game writes the combat log (confirmed)
+
+Tested on 2026-10-31 at a training dummy, with a reader that checks the file every second through an open handle.
+
+| Step | File |
+| --- | --- |
+| Fight the dummy without a break | No change for minutes |
+| Leave combat at about 22:52:12 | File grows at 22:52:13. The newest line is 1.1 seconds old. |
+| Cast a buff on yourself, stay out of combat for more than 60 seconds | No change |
+| Start a new fight | No change |
+| Leave combat at about 22:54:28 | File grows at 22:54:28 with 5054 lines from 22:52:12 on, including the buff |
+
+Rule: the game writes the combat log only when your character leaves combat. Then the file is current within about one second. Until then, every line stays in memory, also lines that are not about combat (zone changes, auras, `ARENA_MATCH_START`). Stopping the log does not write the buffer either.
+
+Blizzard made this change on purpose in patch 10.2, to stop out-of-game overlays: [Wowhead](https://www.wowhead.com/news/combat-log-changes-with-patch-10-2-measures-to-prevent-out-of-game-overlays-335813), [WoWCarry](https://wowcarry.com/blog/wow/patch-102-introduces-updates-to-combat-logs-measures-against-out-of-game-overlays).
+
+What this means for the tool:
+
+| Signal | Arrives in time? |
+| --- | --- |
+| Arena or Solo Shuffle result | Yes. The match or round ends, so you leave combat. |
+| Start of the next Solo Shuffle round (open the next prediction) | Yes. The tool opens it when the round result arrives. |
+| Entry into an arena (open the prediction) | No. It arrives with the first end of combat, usually the match end. |
+| Gates open (lock the prediction) | No. Same reason. |
+| Battleground result | No. It is not in the combat log at all. |
+
 ## Chat log file (WoWChatLog.txt)
+
+The chat log is also buffered. On 2026-10-31, `/chatlog` was on and two `/say` lines did not reach the file. Older community sources say the game writes this file only on logout or `/reload`, on purpose: [WoWInterface](https://www.wowinterface.com/forums/showthread.php?t=43380), [Warmane forum](https://forum.warmane.com/showthread.php?t=432732). So the chat log cannot give live signals either.
+
+### Earlier notes on the chat log
 
 The folder also had a `WoWChatLog.txt` from an earlier session. The game writes it after `/chatlog` or `LoggingChat(true)`. It contains system messages during a PvP match, for example:
 
