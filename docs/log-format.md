@@ -1,6 +1,6 @@
 # Combat log format (Midnight)
 
-Status: arena skirmish confirmed. Rated arena, Solo Shuffle and battlegrounds are still open.
+Status: arena skirmish and rated Solo Shuffle confirmed. Rated 2v2 and 3v3 and battlegrounds are still open.
 
 ## Confirmed: arena skirmish (3v3, win)
 
@@ -32,6 +32,44 @@ How the tool finds your own team:
 The last field of `ARENA_MATCH_START` was `0`, but your team was `1`. That field is not your team ID, so the tool does not use it. Confirmed by the player: the match was a win, and two enemies died.
 
 AutoCombatLogger restarted the log on entry. A new `COMBAT_LOG_VERSION` line appears at the same time as the `ZONE_CHANGE`, so no match line is lost.
+
+## Confirmed: rated Solo Shuffle (3-3)
+
+Recorded on 2026-10-31. The anonymized excerpt is in [test/fixtures/solo-shuffle-3-3.txt](../test/fixtures/solo-shuffle-3-3.txt). The RatedTracker addon showed the result L, L, W, W, L, W. The rules below give the same six results and the same round lengths from the log alone.
+
+```
+21:28:42.5791  ZONE_CHANGE,1505,"Nagrand Arena",0
+21:29:26.1881  ARENA_MATCH_START,1505,42,Rated Solo Shuffle,0      round 1 starts
+21:29:26.1881  COMBATANT_INFO,...                                   6 lines, teams for this round
+21:29:43.9971  UNIT_DIED,...,"Player3-Realm-EU",0x10548,0x80000000,1   feign death, ignore
+21:32:27.2311  UNIT_DIED,...,"Player2-Realm-EU",0x10512,0x80000020,0   real death, round 1 ends
+21:33:02.7321  ARENA_MATCH_START,1505,42,Rated Solo Shuffle,0      round 2 starts
+...
+21:44:51.2051  ARENA_MATCH_END,-1,84,2831,2805                     match ends
+```
+
+Rules for Solo Shuffle:
+
+1. Each round starts with its own `ARENA_MATCH_START` line, with `matchType` `Rated Solo Shuffle`. There is no line for the end of a round.
+2. After each `ARENA_MATCH_START`, there are 6 new `COMBATANT_INFO` lines. The teams change every round, so read your team again each round.
+3. The first `UNIT_DIED` of a player with last field `0` ends the round. If the dead player is on your team, you lost the round. Otherwise you won it.
+4. A `UNIT_DIED` with last field `1` is not a real death (for example Feign Death). Ignore it.
+5. There is only one `ARENA_MATCH_END`, after round 6. Its `winningTeam` is `-1`, and its duration is the length of round 6 only. Do not use it for the round result.
+
+Timing:
+
+| Interval | Measured |
+| --- | --- |
+| Entry to round 1 start | 44 seconds |
+| End of a round to start of the next round | 35 to 36 seconds |
+
+So viewers have about 35 seconds to bet on rounds 2 to 6, minus the stream delay.
+
+Still open for Solo Shuffle: a round that ends by the time limit without a death, and a player who leaves during the match.
+
+## Reading the file while the game writes it
+
+The game keeps the log file open. A reader must open it with shared read and write access. A normal exclusive open fails with "The process cannot access the file because it is being used by another process."
 
 ## How to record a test log
 

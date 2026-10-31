@@ -25,7 +25,8 @@ This list covers what we must test before the parser and the Twitch client are f
 | [ ] | Arena skirmish or rated arena | Loss | The winner mapping also works for a loss. |
 | [ ] | Rated 2v2 | Any | `matchType` value and rating fields in `ARENA_MATCH_END`. |
 | [ ] | Rated 3v3 | Any | Same as 2v2. Also: RatedTracker and AutoCombatLogger both control the log. Make sure that no lines are lost. |
-| [ ] | Solo Shuffle | Any | Lines for the start, the end and the winner of each of the 6 rounds. Time between rounds. |
+| [x] | Solo Shuffle | 3-3 | Round start, round end and round winner. Confirmed on 2026-10-31. |
+| [ ] | Solo Shuffle | Round ends by time limit | What the log shows when nobody dies. Only if it happens. |
 | [ ] | Random battleground | Any | Lines for entry, start and end, and the winner. The wiki documents none. |
 | [ ] | Epic battleground | Any | Same as random battleground. |
 | [ ] | Battleground Blitz | Any | Same as random battleground. Does AutoCombatLogger start the log? |
@@ -38,7 +39,7 @@ This list covers what we must test before the parser and the Twitch client are f
 ## Timing tests
 
 - [ ] Measure the write delay of the log file. Claude watches the file while you fight a training dummy and compares the line times with the file write times.
-- [ ] Solo Shuffle: measure the break between rounds. If it is too short, viewers cannot bet. Then we decide again how Solo Shuffle works.
+- [x] Solo Shuffle: measure the break between rounds. Result: 35 to 36 seconds. Decide if this is enough time for viewers to bet.
 - [ ] Battlegrounds: measure the time between entry and start.
 
 ## Twitch tests (phase 3, needs a Twitch app)
