@@ -27,7 +27,8 @@ This list covers what we must test before the parser and the Twitch client are f
 | [ ] | Rated 3v3 | Any | Same as 2v2. Also: RatedTracker and AutoCombatLogger both control the log. Make sure that no lines are lost. |
 | [x] | Solo Shuffle | 3-3 | Round start, round end and round winner. Confirmed on 2026-10-31. |
 | [ ] | Solo Shuffle | Round ends by time limit | What the log shows when nobody dies. You cannot plan it, so we test it when it occurs. |
-| [ ] | Random battleground | Any | Lines for entry, start and end, and the winner. The wiki documents none. |
+| [x] | Random battleground | Loss | Entry and gates confirmed. No end line and no winner in the combat log. Tested on 2026-10-31. |
+| [ ] | Random battleground with chat log on | Any | End message and winner in `WoWChatLog.txt`. |
 | [ ] | Epic battleground | Any | Same as random battleground. |
 | [ ] | Battleground Blitz | Any | Same as random battleground. Does AutoCombatLogger start the log? |
 | [ ] | Rated battleground | Any | Same as random battleground. Lower priority, because it needs a premade group. |

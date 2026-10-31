@@ -1,6 +1,6 @@
 # Combat log format (Midnight)
 
-Status: arena skirmish and rated Solo Shuffle confirmed. Rated 2v2 and 3v3 and battlegrounds are still open.
+Status: arena skirmish and rated Solo Shuffle confirmed. Battlegrounds: the combat log has no end line and no winner. Rated 2v2 and 3v3 are still open.
 
 ## Confirmed: arena skirmish (3v3, win)
 
@@ -67,9 +67,41 @@ So viewers have about 35 seconds to bet on rounds 2 to 6, minus the stream delay
 
 Still open for Solo Shuffle: a round that ends by the time limit without a death, and a player who leaves during the match.
 
+## Tested: random battleground (Seething Shore, loss)
+
+Recorded on 2026-10-31 with the companion addon. `/pvppc status` showed zone type `pvp`, and the addon started the log.
+
+```
+22:17:06.8801  ZONE_CHANGE,1803,"Zul'Aman",0
+22:17:09.2551  ZONE_CHANGE,1803,"Seething Shore",0
+22:17:07.5161  SPELL_AURA_APPLIED,<self>,...,44521,"Preparation",...
+22:19:14.5161  SPELL_AURA_REMOVED,<self>,...,44521,"Preparation",...
+22:27:17.9131  (last line, many SPELL_AURA_REMOVED lines at the same time)
+```
+
+Results:
+
+- Entry: `ZONE_CHANGE` to the battleground zone. The first `ZONE_CHANGE` can name the wrong zone, so the tool uses the zone type from the addon or the last `ZONE_CHANGE`.
+- Gates open: your own `Preparation` aura (spell 44521) is removed, 2 minutes and 5 seconds after entry. This is a usable lock signal.
+- End and winner: no line. There is no `ARENA_MATCH_END`, no `COMBATANT_INFO`, no battleground event. The combat log alone cannot resolve a battleground prediction.
+
+## Chat log file (WoWChatLog.txt)
+
+The folder also had a `WoWChatLog.txt` from an earlier session. The game writes it after `/chatlog` or `LoggingChat(true)`. It contains system messages during a PvP match, for example:
+
+```
+10/31 18:57:26.501  Thirty seconds until the Arena battle begins!
+10/31 18:57:56.334  The Arena battle has begun!
+10/31 18:59:22.090  You have been awarded 90 Honor.
+```
+
+So the Midnight limit on reading chat applies to addons, not to this file. Not tested yet: the battleground end message and whether it names the winner in a way the tool can map to your side. The file also contains whispers and guild chat. The tool must read only system messages and must never store or send the rest.
+
 ## Reading the file while the game writes it
 
 The game keeps the log file open. A reader must open it with shared read and write access. A normal exclusive open fails with "The process cannot access the file because it is being used by another process."
+
+The file size in a directory listing is not reliable while the file is open. During the battleground, the listing showed 0 bytes for minutes. The tool must read the size from its own open file handle. The real write delay is still not measured.
 
 ## How to record a test log
 
