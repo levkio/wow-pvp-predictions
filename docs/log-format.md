@@ -1,6 +1,37 @@
 # Combat log format (Midnight)
 
-Status: not filled in. This file gets real example lines from phase 0.
+Status: arena skirmish confirmed. Rated arena, Solo Shuffle and battlegrounds are still open.
+
+## Confirmed: arena skirmish (3v3, win)
+
+Recorded on 2026-10-31 with AutoCombatLogger. The log reports `BUILD_VERSION,12.1.5`. The anonymized excerpt is in [test/fixtures/skirmish-3v3-win.txt](../test/fixtures/skirmish-3v3-win.txt).
+
+```
+18:57:00.9751  COMBAT_LOG_VERSION,22,ADVANCED_LOG_ENABLED,1,BUILD_VERSION,12.1.5,PROJECT_ID,1
+18:57:00.9751  ZONE_CHANGE,980,"Tol'viron Arena",0
+18:57:56.3361  ARENA_MATCH_START,980,42,Skirmish,0
+18:57:56.3361  COMBATANT_INFO,Player-0000-00000001,1,...
+18:59:21.0761  ARENA_MATCH_END,1,84,0,0
+18:59:25.4541  ZONE_CHANGE,0,"The Cape of Stranglethorn",0
+```
+
+What each line means for the prediction:
+
+| Line | Moment | Prediction action |
+| --- | --- | --- |
+| `ZONE_CHANGE` to an arena zone | You enter the arena | Open |
+| `ARENA_MATCH_START` | The gates open, 56 seconds after entry | Lock |
+| `ARENA_MATCH_END` | The match ends | Resolve |
+
+How the tool finds your own team:
+
+1. Find your own character. Its unit flags have the "mine" bit (`0x1`), for example `0x511`.
+2. Find the `COMBATANT_INFO` line with your GUID. The second field is your team (0 or 1).
+3. Compare it with the first field of `ARENA_MATCH_END` (`winningTeam`). If they are equal, you won.
+
+The last field of `ARENA_MATCH_START` was `0`, but your team was `1`. That field is not your team ID, so the tool does not use it. Confirmed by the player: the match was a win, and two enemies died.
+
+AutoCombatLogger restarted the log on entry. A new `COMBAT_LOG_VERSION` line appears at the same time as the `ZONE_CHANGE`, so no match line is lost.
 
 ## How to record a test log
 
