@@ -6,7 +6,7 @@ This list covers what we must test before the parser and the Twitch client are f
 
 1. Make sure that AutoCombatLogger has "Yes" for Arenas and Battlegrounds, with a delay of about 30 seconds.
 2. Make sure that Advanced Combat Logging is on (Options, Game, System, Network).
-3. After the match, tell Claude the mode and the result. For Solo Shuffle, also give the result of each round if you remember it.
+3. After the match, tell Claude the mode and the result. For Solo Shuffle, also give the result of each round. If you do not remember it, that is no problem.
 
 ## In-game tests (phase 0)
 
@@ -23,7 +23,7 @@ This list covers what we must test before the parser and the Twitch client are f
 | [ ] | Rated battleground | Any | Same as random battleground. Lower priority, because it needs a premade group. |
 | [ ] | Any arena | You leave early | What the log shows. The prediction must be canceled. |
 | [ ] | Any match | Disconnect or `/reload` during the match | What the log shows. Does the log continue? |
-| [ ] | Any arena | Draw (timer runs out) | Value of `winningTeam` for a draw. Only if it happens. |
+| [ ] | Any arena | Draw (timer runs out) | Value of `winningTeam` for a draw. You cannot plan a draw, so we test it when it occurs. |
 | [ ] | Two matches in a row without leaving the queue system | Any | The tool must not mix up the two matches. |
 
 ## Timing tests
@@ -38,7 +38,7 @@ This list covers what we must test before the parser and the Twitch client are f
 - [ ] Log in with the Device Code Grant Flow.
 - [ ] Create a test prediction and cancel it at once. Find the maximum title length and the limits of `prediction_window`.
 - [ ] Lock a prediction early with status `LOCKED`.
-- [ ] Resolve a prediction. Find out if End Prediction takes query parameters or a JSON body.
+- [ ] Resolve a prediction. Find out which input End Prediction takes: query parameters or a JSON body.
 - [ ] Receive `channel.prediction.*` events over EventSub WebSocket.
 - [ ] Restart the tool while a prediction is open. The tool must find the open prediction again.
 - [ ] Refresh the access token after 4 hours. Make sure that the new refresh token is stored.
