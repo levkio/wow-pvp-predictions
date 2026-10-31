@@ -39,7 +39,8 @@ This list covers what we must test before the parser and the Twitch client are f
 
 ## Timing tests
 
-- [ ] Measure the write delay of the log file. Claude watches the file while you fight a training dummy and compares the line times with the file write times.
+- [ ] Measure the write delay of the log file with an open file handle, in an arena match and in Solo Shuffle. First result in a battleground: more than 30 seconds in some cases. This is now the most important open point.
+- [ ] Find out what makes the game write its buffer (time, buffer size, or `LoggingCombat(false)`).
 - [x] Solo Shuffle: measure the break between rounds. Result: 35 to 36 seconds. Decide if this is enough time for viewers to bet.
 - [ ] Battlegrounds: measure the time between entry and start.
 

@@ -76,14 +76,18 @@ Recorded on 2026-10-31 with the companion addon. `/pvppc status` showed zone typ
 22:17:09.2551  ZONE_CHANGE,1803,"Seething Shore",0
 22:17:07.5161  SPELL_AURA_APPLIED,<self>,...,44521,"Preparation",...
 22:19:14.5161  SPELL_AURA_REMOVED,<self>,...,44521,"Preparation",...
-22:27:17.9131  (last line, many SPELL_AURA_REMOVED lines at the same time)
+22:27:25.3811  ZONE_CHANGE,0,"Zul'Aman",0          you leave the battleground
+22:27:54.8601  (last line, the addon stops the log 30 seconds after you leave)
 ```
+
+The first analysis read the file at 22:27:36 and saw lines only up to 22:27:17. The game wrote the rest to disk at 22:29:56. The results below come from the complete file.
 
 Results:
 
 - Entry: `ZONE_CHANGE` to the battleground zone. The first `ZONE_CHANGE` can name the wrong zone, so the tool uses the zone type from the addon or the last `ZONE_CHANGE`.
 - Gates open: your own `Preparation` aura (spell 44521) is removed, 2 minutes and 5 seconds after entry. This is a usable lock signal.
-- End and winner: no line. There is no `ARENA_MATCH_END`, no `COMBATANT_INFO`, no battleground event. The combat log alone cannot resolve a battleground prediction.
+- Leave: `ZONE_CHANGE` back to the open world.
+- End and winner: no line. There is no `ARENA_MATCH_END`, no `COMBATANT_INFO`, no battleground event between the gates and the leave. The combat log alone cannot resolve a battleground prediction.
 
 ## Chat log file (WoWChatLog.txt)
 
@@ -101,7 +105,15 @@ So the Midnight limit on reading chat applies to addons, not to this file. Not t
 
 The game keeps the log file open. A reader must open it with shared read and write access. A normal exclusive open fails with "The process cannot access the file because it is being used by another process."
 
-The file size in a directory listing is not reliable while the file is open. During the battleground, the listing showed 0 bytes for minutes. The tool must read the size from its own open file handle. The real write delay is still not measured.
+The file size in a directory listing is not reliable while the file is open. During the battleground, the listing showed 0 bytes for minutes. The tool must read the size from its own open file handle. Measured with an open file handle during the battleground:
+
+| Clock time of the check | Newest line in the file |
+| --- | --- |
+| 22:17:39 | none (file empty, entry was at 22:17:06) |
+| 22:28:07 | 22:27:17.9 |
+| 22:32:12 | 22:27:54.9 (written at 22:29:56) |
+
+The game writes the log in large blocks, not line by line. A line can reach the disk more than 30 seconds after it happened. This is a risk for live predictions: the lock and the result can arrive late. In Solo Shuffle, the break between rounds is only 35 seconds. We must measure the delay exactly before we build the state machine.
 
 ## How to record a test log
 
