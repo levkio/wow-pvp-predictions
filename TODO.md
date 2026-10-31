@@ -48,3 +48,9 @@ This list covers what we must test before the parser and the Twitch client are f
 - [ ] Build a replay mode that plays a saved log at real speed into the parser.
 - [ ] Add an anonymized fixture for every mode in the table above.
 - [ ] Run the state machine against every fixture in CI.
+
+## Release on CurseForge (phase 5)
+
+- [ ] Ask CurseForge support if a WoW project can contain a Windows desktop program, or if the project can name a download on GitHub. Their policy says: "External download links for files are not allowed."
+- [ ] Read the CurseForge Mod Author Terms: https://legal.overwolf.com/docs/curseforge/mod-authors-terms
+- [ ] Decide if we publish a small companion addon on CurseForge. It can turn on combat logging in PvP and replace AutoCombatLogger.
